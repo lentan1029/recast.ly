@@ -1,14 +1,18 @@
-var App = () => (
-  <div>
+var App = () => {
+  var getVideo = function() {
+    return window.exampleVideoData[0];
+  };
+
+  return (<div>
     <Nav />
     <div className="col-md-7">
-      <VideoPlayer/>
+      <VideoPlayer video={getVideo()} />
     </div>
     <div className="col-md-5">
-      <VideoList/>
+      <VideoList videos={window.exampleVideoData}/>
     </div>
-  </div>
-);
+  </div>);
+};
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined
