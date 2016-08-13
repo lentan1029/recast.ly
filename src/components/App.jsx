@@ -2,16 +2,37 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.props.searchYouTube();
-    // this.setState({playing: window.exampleVideoData[0]});
-    // this.playThis(window.exampleVideoData[0]);
-    console.log('this is the props,', props.searchYouTube);
-    this.props.searchYouTube({key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'}, this.youTubeOnReady.bind(this));
+    // this.props.searchYouTube({key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'}, this.youTubeOnReady.bind(this));
 
     this.state = {
-      playing: window.exampleVideoData[0],
-      videos: window.exampleVideoData
+      // playing: '',
+      // videos: ''
+      playing: {id:{videoId: ''}, snippet: {title: ''}},
+      videos: [{id:{videoId: ''}, snippet: {title: '', thumbnails: {default: {url: ''}}}}]
     };
+  }
+
+  componentWillMount () {
+    console.log('componentWillMount');
+    var options = {key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'};
+    var flag = false;
+    this.serverRequest = searchYouTube(options, this.setState.bind(this));
+      // var context = this;
+      // $.ajax({
+      //   url: 'https://www.googleapis.com/youtube/v3/search',
+      //   type: 'GET',
+      //   dataType: 'json',
+      //   data: options,
+      //   success: function(data) {
+      //     flag = true;
+      //     context.setState({playing: data.items[0], videos: data.items});
+      //     // callback(data.items[0], data.items);
+      //     render()
+      //   },
+      //   error: function(data, status, err) {
+      //     console.log(data, status, err);
+      //   }
+      // });
   }
 
   youTubeOnReady (playing, videos) {

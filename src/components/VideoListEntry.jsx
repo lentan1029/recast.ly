@@ -1,5 +1,4 @@
 var VideoListEntry = (props) => {
-
   return (<div className="video-list-entry">
     <div className="media-left media-middle">
       <img className="media-object" src={props.video.snippet.thumbnails.default.url} alt="" />
