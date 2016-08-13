@@ -5,7 +5,8 @@ class App extends React.Component {
     // this.props.searchYouTube();
     // this.setState({playing: window.exampleVideoData[0]});
     // this.playThis(window.exampleVideoData[0]);
-    searchYouTube({key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'}, this.youTubeOnReady.bind(this));
+    console.log('this is the props,', props.searchYouTube);
+    this.props.searchYouTube({key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'}, this.youTubeOnReady.bind(this));
 
     this.state = {
       playing: window.exampleVideoData[0],
@@ -18,6 +19,7 @@ class App extends React.Component {
       playing: playing,
       videos: videos
     });
+
   }
 
   playThis (video) {
@@ -28,14 +30,14 @@ class App extends React.Component {
 
   render () {
     return (<div>
-      <Nav />
-      <div className="col-md-7">
-        <VideoPlayer video={this.state ? this.state.playing : null} />
-      </div>
-      <div className="col-md-5">
-        <VideoList playThis={this.playThis.bind(this)} videos={this.state.videos}/>
-      </div>
-    </div>);
+        <Nav />
+        <div className="col-md-7">
+          <div><VideoPlayer video={this.state.playing} /></div>     
+        </div>
+        <div className="col-md-5">
+          <VideoList playThis={this.playThis.bind(this)} videos={this.state.videos}/>
+        </div>
+      </div>);
   }
 }
 
