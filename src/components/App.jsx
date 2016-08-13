@@ -1,46 +1,20 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.props.searchYouTube({key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'}, this.youTubeOnReady.bind(this));
-
-    this.state = {
-      // playing: '',
-      // videos: ''
-      playing: {id:{videoId: ''}, snippet: {title: ''}},
-      videos: [{id:{videoId: ''}, snippet: {title: '', thumbnails: {default: {url: ''}}}}]
+    var cb = function(data) {
+      this.setState({playing: data[0], videos: data});
     };
+    var options = {key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'};
+    this.props.searchYouTube(options, cb.bind(this));
+    this.state = null;
   }
 
   componentWillMount () {
-    console.log('componentWillMount');
     var options = {key: window.YOUTUBE_API_KEY, part: 'snippet', q: 'Adele'};
-    var flag = false;
-    this.serverRequest = searchYouTube(options, this.setState.bind(this));
-      // var context = this;
-      // $.ajax({
-      //   url: 'https://www.googleapis.com/youtube/v3/search',
-      //   type: 'GET',
-      //   dataType: 'json',
-      //   data: options,
-      //   success: function(data) {
-      //     flag = true;
-      //     context.setState({playing: data.items[0], videos: data.items});
-      //     // callback(data.items[0], data.items);
-      //     render()
-      //   },
-      //   error: function(data, status, err) {
-      //     console.log(data, status, err);
-      //   }
-      // });
-  }
-
-  youTubeOnReady (playing, videos) {
-    this.setState({
-      playing: playing,
-      videos: videos
-    });
-
+    var cb = function(data) {
+      this.setState({playing: data[0], videos: data});
+    };
+    this.serverRequest = searchYouTube(options, cb.bind(this)); 
   }
 
   playThis (video) {
@@ -50,7 +24,10 @@ class App extends React.Component {
   }
 
   render () {
-    return (<div>
+    if (!this.state) {
+      return (<div className="video-player video-list form-control"></div>);
+    } else {
+      return (<div>
         <Nav />
         <div className="col-md-7">
           <div><VideoPlayer video={this.state.playing} /></div>     
@@ -59,6 +36,7 @@ class App extends React.Component {
           <VideoList playThis={this.playThis.bind(this)} videos={this.state.videos}/>
         </div>
       </div>);
+    }
   }
 }
 
