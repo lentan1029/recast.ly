@@ -14,7 +14,7 @@ class App extends React.Component {
     var cb = function(data) {
       this.setState({playing: data[0], videos: data});
     };
-    this.serverRequest = searchYouTube(options, cb.bind(this)); 
+    this.serverRequest = this.props.searchYouTube(options, cb.bind(this)); 
   }
 
   playThis (video) {
@@ -23,12 +23,21 @@ class App extends React.Component {
     });
   }
 
+  keyPressHandler (input) {
+    var options = {key: window.YOUTUBE_API_KEY, part: 'snippet', q: input};
+    var cb = function(data) {
+      this.setState({playing: data[0], videos: data});
+    };
+    console.log('keypresshandler input:', input);
+    this.props.searchYouTube(options, cb.bind(this));
+  }
+
   render () {
     if (!this.state) {
       return (<div className="video-player video-list form-control"></div>);
     } else {
       return (<div>
-        <Nav />
+        <Nav inputHandler={this.keyPressHandler.bind(this)} />
         <div className="col-md-7">
           <div><VideoPlayer video={this.state.playing} /></div>     
         </div>
